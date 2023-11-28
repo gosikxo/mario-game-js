@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mario Game</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="modal" class="modal">
+      <div class="button-container">
+        <button id="register-button">Register</button>
+        <button id="login-button" class="not active">Login</button>
+      </div>
+      <form onsubmit="" id="register-form">
+        <label for="register-email">Email</label>
+        <input
+          type="email"
+          id="register-email"
+          placeholder="demo@exampl.com"
+          required
+        />
+        <label for="register-password">Password</label>
+        <input
+          type="password"
+          id="register-password"
+          placeholder="password"
+          required
+          pattern=".{6,}"
+        />
+        <label for="register-username">Username</label>
+        <input type="text" id="register-username" placeholder="User" required />
+        <br />
+        <input type="submit" value="Sign up" />
+      </form>
+
+      <form onsubmit="" id="login-form" class="hidden">
+        <label for="login-email">Email</label>
+        <input
+          type="email"
+          id="login-email"
+          placeholder="demo@exampl.com"
+          required
+        />
+        <label for="login-password">Password</label>
+        <input
+          type="password"
+          id="login-password"
+          placeholder="password"
+          required
+          pattern=".{6,}"
+        />
+        <br />
+        <input type="submit" value="Sign in" />
+      </form>
+    </div>
+
+    <div class="info-container">
+      <button id="logout-button" class="hidden">Log out</button>
+      <h3 id="username"></h3>
+      <h3 id="highscore-tag" class="hidden">
+        HighScore: <span id="highscore"></span>
+      </h3>
+    </div>
+
+    <scipt src="https://kaboomjs.com/lib/0.5.0/kaboom.js"></scipt>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@11.0.0"></script>
+    <scipt src="game.js"></scipt>
+  </body>
+</html>
