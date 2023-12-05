@@ -11,24 +11,24 @@
         <button id="register-button">Register</button>
         <button id="login-button" class="not-active">Login</button>
       </div>
-      <form onsubmit="" id="register-form">
+      <form onsubmit="register(event)" id="register-form">
         <label for="register-email">Email</label>
         <input
           type="email"
           id="register-email"
-          placeholder="demo@exampl.com"
+          value="demo@exampl.com"
           required
         />
         <label for="register-password">Password</label>
         <input
           type="password"
           id="register-password"
-          placeholder="password"
+          value="password"
           required
           pattern=".{6,}"
         />
         <label for="register-username">Username</label>
-        <input type="text" id="register-username" placeholder="User" required />
+        <input type="text" id="register-username" value="User" required />
         <br />
         <input type="submit" value="Sign up" />
       </form>
@@ -64,6 +64,6 @@
 
     <scipt src="https://kaboomjs.com/lib/0.5.0/kaboom.js"></scipt>
     <script src="https://cdn.jsdelivr.net/npm/appwrite@11.0.0"></script>
-    <scipt src="game.js"></scipt>
+    <script src="game.js"></script>
   </body>
 </html>
