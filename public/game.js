@@ -113,8 +113,17 @@ function startGame () {
             '===============================   ====',
         ],
         [
-
-        ]
+            '£                                              £',
+            '£                                              £',
+            '£                                              £',
+            '£                                              £',
+            '£                                              £',
+            '£      @@@@@@                         x x      £',
+            '£                                   x x x      £',
+            '£                                 x x x x  x -+£',
+            '£                  z     z      x x x x x  x ()£',
+            '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        ],
         ]
 
         const levelCfg = {
@@ -142,7 +151,7 @@ function startGame () {
         const gameLevel = addLevel(map[level], levelCfg)
     })
 
-    start("game", { level: 0, score: 0 })
+    start("game", { level: 1, score: 0 })
 
 }
 
