@@ -72,7 +72,7 @@ function startGame () {
     const bigJumpForce = 550
     let currentJumpForce = jumpForce
     const fallDeath = 400
-    const enemyDeath = 20
+    const ENEMY_SPEED = 20
 
     //Game logic
     let isJumping = true
@@ -166,8 +166,96 @@ function startGame () {
             solid(),
             pos(30, 0),
             body(),
+            big(),
             origin('bot')
         ])
+
+        function big () {
+            let timer = 0
+            let isBig = false
+            return {
+                update () {
+                    if (isBig) {
+                        currentJumpForce = bigJumpForce
+                        timer -= dt()
+                        if (timer <= 0) {
+                            this.smallify()
+                        }
+                    }
+                },
+                isBig () {
+                    return isBig
+                },
+                smallify () {
+                    this.scale = vec2(1)
+                    currentJumpForce = jumpForce
+                    timer = 0
+                    isBig = false
+                },
+                biggify (time) {
+                    this.scale = vec2(2)
+                    timer = time
+                    isBig = true
+                }
+            }
+        }
+
+        player.on("headbump", (obj) => {
+            if (obj.is('coin-surprise')) {
+                gameLevel.spawn('$', obj.gridPos.sub(0, 1))
+                destroy(obj)
+                gameLevel.spawn('}', obj.gridPos.sub(0, 0))
+            }
+            if (obj.is('mushroom-surprise')) {
+                gameLevel.spawn('#', obj.gridPos.sub(0, 1))
+                destroy(obj)
+                gameLevel.spawn('}', obj.gridPos.sub(0, 0))
+            }
+        })
+
+        action('mushroom', (m) => {
+            m.move(20, 0)
+        })
+
+        player.collides('mushroom', (m) => {
+            destroy(m)
+            player.biggify(6)
+            currentJumpForce = bigJumpForce
+        })
+
+        player.action(() => {
+            camPos(player.pos)
+            if (player.pos.y >= fallDeath) {
+                go('lose', { score: scoreLabel.value })
+            }
+        })
+
+        player.collides('pipe', () => {
+            keyPress('down', () => {
+                go('game', {
+                    level: (level + 1) % map.length,
+                    score: scoreLabel.value
+                })
+            })
+        })
+
+        player.collides('coin', (c) => {
+            destroy(c)
+            scoreLabel.value++
+            scoreLabel.text = scoreLabel.value
+        })
+
+        action('dangerous', (d) => {
+            d.move(-ENEMY_SPEED, 0)
+        })
+
+        player.collides('dangerous', (d) => {
+            if (isJumping) {
+                destroy(d)
+            } else {
+                go('lose', { score: scoreLabel.value })
+            }
+        })
 
         keyDown('left', () => {
             player.move(-moveSpeed, 0)
