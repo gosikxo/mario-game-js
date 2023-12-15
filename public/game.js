@@ -149,9 +149,53 @@ function startGame () {
         }
 
         const gameLevel = addLevel(map[level], levelCfg)
+
+        const scoreLabel = add([
+            text(score),
+            pos(30, 6),
+            layer('ui'),
+            {
+                value: score,
+            }
+        ])
+
+        add([text('level ' + parseInt(level + 1)), pos(40, 6)])
+
+        const player = add([
+            sprite('mario'),
+            solid(),
+            pos(30, 0),
+            body(),
+            origin('bot')
+        ])
+
+        keyDown('left', () => {
+            player.move(-moveSpeed, 0)
+        })
+
+        keyDown('right', () => {
+            player.move(moveSpeed, 0)
+        })
+
+        player.action(() => {
+            if (player.grounded()) {
+                isJumping = false
+            }
+        })
+
+        keyPress('space', () => {
+            if (player.grounded()) {
+                isJumping = true
+                player.jump(currentJumpForce)
+            }
+        })
+
+        scene('lose', ({ score }) => {
+            add([text(score, 32), origin('center'), pos(width() / 2, height() / 2)])
+        })
     })
 
-    start("game", { level: 1, score: 0 })
+    start("game", { level: 0, score: 0 })
 
 }
 
