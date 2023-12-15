@@ -19,6 +19,16 @@ async function isLoggeddIn () {
     }).catch(error => console.log(error))
 }
 
+function displayUsername () {
+    account.get().then(response => {
+        document.getElementById('username').textContent = response.name
+    }).catch(error => console.log(error))
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    displayUsername()
+})
+
 function generateUUID () {
     let d = new Date().getTime();
     let d2 = (performance && performance.now && (performance.now() * 1000)) || 0;
@@ -52,6 +62,7 @@ function register (event) {
             event.target.elements['register-password'].value,
         ).then(() => {
             showDisplay()
+            displayUsername()
         })
     }).catch(error => {
         console.log(error)
@@ -66,6 +77,7 @@ function login (event) {
     ).then(() => {
         alert('You have been logged in')
         showDisplay()
+        displayUsername()
         client.subscribe('account', (response) => {
             console.log(response)
         })
