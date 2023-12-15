@@ -10,6 +10,15 @@ const client = new Client()
 const account = new Account(client)
 const databases = new Databases(client)
 
+async function isLoggeddIn () {
+    return account.get().then(response => {
+        if (response) {
+            return true
+        }
+        return false
+    }).catch(error => console.log(error))
+}
+
 function generateUUID () {
     let d = new Date().getTime();
     let d2 = (performance && performance.now && (performance.now() * 1000)) || 0;
@@ -50,9 +59,39 @@ function register (event) {
     event.preventDefault()
 }
 
+function login () {
+
+}
+
+function logout () {
+    account.deleteSessions().then(() => {
+        alert('You have been logged out')
+        console.log('You have been logged out')
+        showDisplay()
+        document.getElementById('highscore').textContent = ''
+    }).catch(error => console.log(error))
+}
+
 function showDisplay () {
     const modalElement = document.getElementById('modal')
     modalElement.classList.add('hidden')
+    isLoggeddIn().then(isLogin => {
+        if (isLogin) {
+            const modalElement = document.getElementById('modal')
+            modalElement.classList.add('hidden')
+            document.getElementById('logout-button').classList.remove('hidden')
+            document.getElementById('highscore-tag').classList.remove('hidden')
+            startGame()
+        } else {
+            const modalElement = document.getElementById('modal')
+            modalElement.classList.remove('hidden')
+            document.getElementById('logout-button').classList.add('hidden')
+            document.getElementById('highscore-tag').classList.add('hidden')
+            document.getElementById('username').textContent = ''
+            const canvas = document.querySelector('canvas')
+            if (canvas) canvas.remove()
+        }
+    }).catch(error => console.log(error))
 }
 
 showDisplay()
@@ -287,4 +326,5 @@ function startGame () {
 
 }
 
-startGame()
+
+
