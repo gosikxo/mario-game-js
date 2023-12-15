@@ -59,8 +59,21 @@ function register (event) {
     event.preventDefault()
 }
 
-function login () {
-
+function login (event) {
+    account.createEmailSession(
+        event.target.elements['login-email'].value,
+        event.target.elements['login-password'].value,
+    ).then(() => {
+        alert('You have been logged in')
+        showDisplay()
+        client.subscribe('account', (response) => {
+            console.log(response)
+        })
+    }).catch(error => {
+        alert('Wrong email or password')
+        console.log(error)
+    })
+    event.preventDefault()
 }
 
 function logout () {
@@ -70,6 +83,27 @@ function logout () {
         showDisplay()
         document.getElementById('highscore').textContent = ''
     }).catch(error => console.log(error))
+}
+
+function toggleModal (event) {
+    const registerForm = document.getElementById('register-form')
+    const loginForm = document.getElementById('login-form')
+    const loginButton = document.getElementById('login-button')
+    const registerButton = document.getElementById('register-button')
+
+    if (event.srcElement.id === 'register-button') {
+        registerForm.classList.remove('hidden')
+        loginForm.classList.add('hidden')
+        loginButton.classList.add('not-active')
+        registerButton.classList.remove('not-active')
+    }
+
+    if (event.srcElement.id === 'login-button') {
+        registerForm.classList.add('hidden')
+        loginForm.classList.remove('hidden')
+        loginButton.classList.remove('not-active')
+        registerButton.classList.add('not-active')
+    }
 }
 
 function showDisplay () {

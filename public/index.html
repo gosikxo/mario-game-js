@@ -9,8 +9,16 @@
   <body>
     <div id="modal" class="modal">
       <div class="button-container">
-        <button id="register-button">Register</button>
-        <button id="login-button" class="not-active">Login</button>
+        <button id="register-button" onclick="toggleModal(event)">
+          Register
+        </button>
+        <button
+          id="login-button"
+          class="not-active"
+          onclick="toggleModal(event)"
+        >
+          Login
+        </button>
       </div>
       <form onsubmit="register(event)" id="register-form">
         <label for="register-email">Email</label>
@@ -34,7 +42,7 @@
         <input type="submit" value="Sign up" />
       </form>
 
-      <form onsubmit="" id="login-form" class="hidden">
+      <form onsubmit="login(event)" id="login-form" class="hidden">
         <label for="login-email">Email</label>
         <input
           type="email"
