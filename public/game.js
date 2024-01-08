@@ -19,14 +19,49 @@ async function isLoggeddIn () {
     }).catch(error => console.log(error))
 }
 
+async function getUserId () {
+    return account.get().then(response => {
+        return response.$id
+    }
+    ).catch(error => console.log(error))
+}
+
 function displayUsername () {
     account.get().then(response => {
         document.getElementById('username').textContent = response.name
     }).catch(error => console.log(error))
 }
 
+function updateScore (score) {
+    const currentHighScore = document.getElementById('highscore').textContent
+    if (Number(score) > Number(currentHighScore)) {
+        getUserId().then(userId => {
+            databases.updateDocument(databaseId, collectionId, userId, {
+                'userId': userId,
+                'highScore': score
+            }).then(() => {
+                showScore()
+            }).then(error => console.log(error))
+        })
+    }
+}
+
+function showScore () {
+    getUserId().then(userId => {
+        console.log(userId)
+        databases.listDocuments(databaseId, collectionId, [
+            Query.equal('userId', userId)
+        ]).then(response => {
+            document.getElementById('highscore').textContent = response.documents[0].highScore
+        }).catch(error => console.log(error))
+    }
+    ).catch(error => console.log(error))
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     displayUsername()
+    showScore()
+
 })
 
 function generateUUID () {
@@ -63,6 +98,7 @@ function register (event) {
         ).then(() => {
             showDisplay()
             displayUsername()
+            showScore()
         })
     }).catch(error => {
         console.log(error)
@@ -78,6 +114,7 @@ function login (event) {
         alert('You have been logged in')
         showDisplay()
         displayUsername()
+        showScore()
         client.subscribe('account', (response) => {
             console.log(response)
         })
@@ -365,6 +402,7 @@ function startGame () {
 
         scene('lose', ({ score }) => {
             add([text(score, 32), origin('center'), pos(width() / 2, height() / 2)])
+            updateScore(score)
         })
     })
 
